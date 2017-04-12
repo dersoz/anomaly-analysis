@@ -8,10 +8,15 @@ object MaxPriceAndWordCount {
   val countOutFileName: String = "outs/countOut"
   val inputFileName: String = "input/table.csv"
 
+  val sampleDataInput: String = "input/SampleInput.csv"
+  val multipleCopyToSameDeviceOut = "multipleCopyToSameDeviceOut"
+
+
   def main(args: Array[String]) {
     val sc: SparkContext = buildSparkContext
     countWordsInFile(sc, inputFileName)
     calculateMaxPriceByYear(sc, inputFileName, outputFileName)
+    analyzeMultipleCopyToSameDevice(sc, sampleDataInput, multipleCopyToSameDeviceOut)
   }
 
   private def buildSparkContext = {
@@ -56,5 +61,11 @@ object MaxPriceAndWordCount {
         sys.exit(1)
     }
   }
+
+  def analyzeMultipleCopyToSameDevice(sc: SparkContext, fileName: String, outputFileName: String): Unit = {
+    sc.textFile(fileName)
+      .map(_.split(";"))
+  }
+
 
 }
